@@ -22,6 +22,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.internal.ui.SharedImages;
@@ -332,6 +333,15 @@ public class PackagePrefixPropertyPage extends PropertyPage {
             tableViewer.refresh();
         }
     }
+    
+    private IJavaElement getJavaElement() {
+        Object o = getElement().getAdapter(IJavaElement.class);
+        if (o instanceof IJavaElement) {
+            return (IJavaElement) o; 
+        }
+        return null;
+    }
+
 
     /**
      * Load packages.
@@ -340,7 +350,7 @@ public class PackagePrefixPropertyPage extends PropertyPage {
      *             the core exception
      */
     private void loadPackages() throws CoreException {
-        IJavaProject proj = (IJavaProject) getElement();
+        IJavaProject proj = (IJavaProject) getJavaElement();
 
         pkgList = new HashSet<String>();
 
@@ -368,7 +378,7 @@ public class PackagePrefixPropertyPage extends PropertyPage {
      * Load properties.
      */
     private void loadProperties() {
-        IJavaProject javaProject = (IJavaProject) getElement();
+        IJavaProject javaProject = (IJavaProject) getJavaElement();
 
         String propertiesFilePath = PropertiesUtil.constructPrefixPropertiesFilePath(javaProject.getProject());
         IFile propertiesFile = javaProject.getProject().getFile(propertiesFilePath);
@@ -393,7 +403,7 @@ public class PackagePrefixPropertyPage extends PropertyPage {
      */
     @Override
     public boolean performOk() {
-        IJavaProject javaProject = (IJavaProject) getElement();
+        IJavaProject javaProject = (IJavaProject) getJavaElement();
 
         String propertiesFilePath = getPropertiesFileName(javaProject);
         IFile propertiesFile = javaProject.getProject().getFile(propertiesFilePath);

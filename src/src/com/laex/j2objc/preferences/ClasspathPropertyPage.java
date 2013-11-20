@@ -212,12 +212,20 @@ public class ClasspathPropertyPage extends PropertyPage implements IWorkbenchPro
 
         return container;
     }
+    
+    private IJavaElement getJavaElement() {
+        Object o = getElement().getAdapter(IJavaElement.class);
+        if (o instanceof IJavaElement) {
+            return (IJavaElement) o; 
+        }
+        return null;
+    }
 
     /**
      * Load project referenced classpaths.
      */
     private void loadProjectReferencedClasspaths() {
-        IJavaElement elm = (IJavaElement) getElement();
+        IJavaElement elm = (IJavaElement) getJavaElement();
         try {
             IClasspathEntry[] refClasspath = elm.getJavaProject().getResolvedClasspath(true);
             for (IClasspathEntry o : refClasspath) {
@@ -309,7 +317,7 @@ public class ClasspathPropertyPage extends PropertyPage implements IWorkbenchPro
      */
     @Override
     public boolean performOk() {
-        IJavaElement javaPrj = (IJavaElement) getElement();
+        IJavaElement javaPrj = (IJavaElement) getJavaElement();
 
         PropertiesUtil.persistClasspathEntries(javaPrj.getJavaProject().getProject(), checkboxTableViewer.getCheckedElements());
 
@@ -325,7 +333,7 @@ public class ClasspathPropertyPage extends PropertyPage implements IWorkbenchPro
      *             Signals that an I/O exception has occurred.
      */
     private void loadUserSelectedClasspaths() throws CoreException, IOException {
-        IJavaElement javaPrj = (IJavaElement) getElement();
+        IJavaElement javaPrj = (IJavaElement) getJavaElement();
         Properties props = PropertiesUtil.getClasspathEntries(javaPrj.getJavaProject().getProject());
 
         for (Object s : props.keySet()) {

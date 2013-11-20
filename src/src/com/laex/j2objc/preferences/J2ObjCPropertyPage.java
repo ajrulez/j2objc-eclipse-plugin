@@ -417,7 +417,11 @@ public class J2ObjCPropertyPage extends PropertyPage implements IWorkbenchProper
      * @return the project
      */
     private IResource getProject() {
-        return ((IJavaElement) getElement()).getResource();
+        Object o = getElement().getAdapter(IJavaElement.class);
+        if (o instanceof IJavaElement) {
+            return ((IJavaElement) o).getResource();
+        }
+        return null;
     }
 
     /*
@@ -437,6 +441,14 @@ public class J2ObjCPropertyPage extends PropertyPage implements IWorkbenchProper
 
         super.performDefaults();
     }
+    
+    private IJavaElement getJavaElement() {
+        Object o = getElement().getAdapter(IJavaElement.class);
+        if (o instanceof IJavaElement) {
+            return (IJavaElement) o; 
+        }
+        return null;
+    }
 
     /*
      * (non-Javadoc)
@@ -444,7 +456,7 @@ public class J2ObjCPropertyPage extends PropertyPage implements IWorkbenchProper
      * @see org.eclipse.jface.preference.PreferencePage#performOk()
      */
     public boolean performOk() {
-        IJavaElement res = (IJavaElement) getElement();
+        IJavaElement res = (IJavaElement) getJavaElement();
         Map<String, String> prefMap = constructPrefMap();
 
         try {

@@ -11,6 +11,7 @@
 package com.laex.j2objc.preferences;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -112,7 +113,7 @@ public class OutputDirPropertyPage extends PropertyPage implements IWorkbenchPro
      */
     @Override
     public boolean performOk() {
-        IJavaProject prj = (IJavaProject) getElement();
+        IJavaProject prj = (IJavaProject) getJavaElement();
 
         try {
             prj.getResource().setPersistentProperty(PropertiesUtil.OUTPUT_DIRECTORY_KEY, txtOutputDirectory.getText().trim());
@@ -130,11 +131,20 @@ public class OutputDirPropertyPage extends PropertyPage implements IWorkbenchPro
      * @throws CoreException the core exception
      */
     private void loadProperty() throws CoreException {
-        IJavaProject prj = (IJavaProject) getElement();
+        IJavaProject prj = (IJavaProject) getJavaElement();
         String outputDir = PropertiesUtil.getOutputDirectory(prj);
         if (outputDir != null) {
             txtOutputDirectory.setText(outputDir);
         }
     }
+    
+    private IJavaElement getJavaElement() {
+        Object o = getElement().getAdapter(IJavaElement.class);
+        if (o instanceof IJavaElement) {
+            return (IJavaElement) o; 
+        }
+        return null;
+    }
+
 
 }

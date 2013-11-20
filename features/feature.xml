@@ -2,7 +2,7 @@
 <feature
       id="j2objc_eclipse_feature"
       label="J2OBJC Plugin Feature"
-      version="1.5.0"
+      version="1.5.2"
       provider-name="Hemanta Sapkota"
       os="linux,macosx"
       ws="cocoa,gtk">
@@ -87,6 +87,18 @@ Everyone is permitted to copy and distribute copies of this Agreement, but in or
 
 This Agreement is governed by the laws of the State of New York and the intellectual property laws of the United States of America. No party to this Agreement will bring a legal action under this Agreement more than one year after the cause of action arose. Each party waives its rights to a jury trial in any resulting litigation.
    </license>
+
+   <requires>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.core.resources" version="3.7.101" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jdt.ui" version="3.7.2" match="greaterOrEqual"/>
+      <import plugin="org.apache.commons.lang" version="2.1.0" match="greaterOrEqual"/>
+      <import plugin="org.apache.ant" version="1.8.2" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jdt.core" version="3.7.3" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui.console" version="3.5.100" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui.ide"/>
+   </requires>
 
    <plugin
          id="j2objc-eclipse-plugin"
